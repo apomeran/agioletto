@@ -19,7 +19,7 @@ class UserIdentity extends CUserIdentity
         else
         {
             $this->_id=$record->id;
-            $this->setState('rol', $record->rol);
+            $this->setState('level', $record->role0->level);
             $this->setState('username', $record->username);
             $this->errorCode=self::ERROR_NONE;
         }

@@ -36,7 +36,15 @@
       <?php
         $menuItems = array(
 				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'Usuarios', 'url'=>array('user/admin'), 'visible'=>!Yii::app()->user->isGuest),
+				array('label'=>'Usuarios', 'url'=>array('user/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Productos', 'url'=>array('product/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Familias', 'url'=>array('family/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Categorias', 'url'=>array('category/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Productos por Categorias', 'url'=>array('productcategory/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Tipos de Muebles', 'url'=>array('furnituretype/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Metodos de Pago', 'url'=>array('paymentmethod/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Pagos', 'url'=>array('payment/admin'), 'visible'=>Yii::app()->user->isAdmin()),
+				array('label'=>'Monedas', 'url'=>array('currency/admin'), 'visible'=>Yii::app()->user->isAdmin()),
         );
 		
 		$menuItems[] = array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest);

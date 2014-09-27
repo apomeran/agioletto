@@ -8,6 +8,10 @@
  * @property string $username
  * @property string $password
  * @property string $email
+ * @property integer $role
+ *
+ * The followings are the available model relations:
+ * @property Role $role0
  */
 class User extends CActiveRecord
 {
@@ -27,10 +31,11 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, email', 'required'),
+			array('username, password, email, role', 'required'),
+			array('role', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, password, email', 'safe', 'on'=>'search'),
+			array('id, username, password, email, role', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -42,6 +47,7 @@ class User extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'role0' => array(self::BELONGS_TO, 'Role', 'role'),
 		);
 	}
 
@@ -55,6 +61,7 @@ class User extends CActiveRecord
 			'username' => 'Username',
 			'password' => 'Password',
 			'email' => 'Email',
+			'role' => 'Role',
 		);
 	}
 
@@ -80,6 +87,7 @@ class User extends CActiveRecord
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('email',$this->email,true);
+		$criteria->compare('role',$this->role);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
