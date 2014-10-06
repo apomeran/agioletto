@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.6
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-10-2014 a las 21:54:30
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.9
+-- Tiempo de generación: 06-10-2014 a las 22:30:47
+-- Versión del servidor: 5.5.32
+-- Versión de PHP: 5.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `agioletto`
 --
+CREATE DATABASE IF NOT EXISTS `agioletto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `agioletto`;
 
 -- --------------------------------------------------------
 
@@ -60,6 +62,11 @@ CREATE TABLE IF NOT EXISTS `claims` (
 
 CREATE TABLE IF NOT EXISTS `client` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` text NOT NULL,
+  `phone` text NOT NULL,
+  `dni` text NOT NULL,
+  `cuit` text NOT NULL,
+  `email` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -163,7 +170,22 @@ INSERT INTO `furniture_type` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
+  `client` int(11) NOT NULL,
+  `observations` text NOT NULL,
+  `source` int(11) NOT NULL,
+  `discount_percentage` int(11) NOT NULL,
+  `total_exc_tax` double NOT NULL,
+  `total_inc_tax` double NOT NULL,
+  `current_debt` double NOT NULL,
+  `initial_deposit` double NOT NULL,
+  `order_date` date NOT NULL,
+  `seller` int(11) NOT NULL,
+  `delivery_expected_days` double NOT NULL,
+  `delivery_expected_date` date NOT NULL,
+  `store` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client` (`client`,`source`),
+  KEY `seller` (`seller`,`store`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -221,16 +243,18 @@ CREATE TABLE IF NOT EXISTS `payment_method` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `payment_method`
 --
 
 INSERT INTO `payment_method` (`id`, `name`) VALUES
-(1, 'Metodo de Pago 1'),
-(2, 'Metodo de Pago 2'),
-(3, 'Metodo de Pago 3');
+(1, 'Efectivo'),
+(2, 'Tarjeta de Credito'),
+(3, 'Tarjeta de Débito'),
+(4, 'Cheque'),
+(5, 'Transferencia Bancaria');
 
 -- --------------------------------------------------------
 
@@ -294,6 +318,53 @@ CREATE TABLE IF NOT EXISTS `role` (
 INSERT INTO `role` (`id`, `name`, `level`) VALUES
 (1, 'Vendedor', 1),
 (2, 'Administrador', 99);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `source`
+--
+
+CREATE TABLE IF NOT EXISTS `source` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `source` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Volcado de datos para la tabla `source`
+--
+
+INSERT INTO `source` (`id`, `source`) VALUES
+(1, 'Internet'),
+(2, 'Promocion'),
+(3, 'Facebook '),
+(4, 'Twitter'),
+(5, 'Diario'),
+(6, 'Cupones'),
+(7, 'Otros');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `store`
+--
+
+CREATE TABLE IF NOT EXISTS `store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `address` text NOT NULL,
+  `phone` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `store`
+--
+
+INSERT INTO `store` (`id`, `name`, `address`, `phone`) VALUES
+(1, 'Libertador', 'Av Libertador 7900 - Nuñez, CABA', '5263-0363'),
+(2, '', 'Av. Cabildo 4932 - Saavedra, CABA', '-');
 
 -- --------------------------------------------------------
 
